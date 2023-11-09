@@ -1,6 +1,6 @@
 const http = require('http');
 const app = require('../index');
-const Logger = require('../config/logger');
+const Logger = require('../middlewares/logger');
 
 const port = process.env.PORT || 8080;
 
