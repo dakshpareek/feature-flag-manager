@@ -3,7 +3,7 @@
  * an error comes in. We use in the index.ts as global middleware
  */
 
-const Logger = require('./logger');
+const Logger = require('./logger.middleware');
 
 const errorHandleMiddleware = (err, req, res, next) => {
     const isProduction = process.env.NODE_ENV === 'production';

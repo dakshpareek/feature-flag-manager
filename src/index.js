@@ -6,9 +6,9 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 
-const { morganMiddleware } = require('./middlewares/morgan');
-const errorHandleMiddleware = require("./middlewares/errorHandler");
-const { NotFoundError } = require('./errors/NotFoundError');
+const { morganMiddleware } = require('./middlewares/morgan.middleware');
+const errorHandleMiddleware = require("./middlewares/errorHandler.middleware");
+const { NotFoundError } = require('./errors/NotFound.error');
 
 /**
  * Initialize express app

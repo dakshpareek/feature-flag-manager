@@ -1,5 +1,5 @@
 const morgan = require('morgan');
-const Logger = require('./logger');
+const Logger = require('./logger.middleware');
 
 /**
  * Override the stream method by telling

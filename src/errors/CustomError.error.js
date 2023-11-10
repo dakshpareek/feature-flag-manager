@@ -1,4 +1,4 @@
-class CustomError extends Error {
+class CustomErrorError extends Error {
     constructor(statusCode, message) {
         super(message);
         Error.captureStackTrace(this, this.constructor);
@@ -8,4 +8,4 @@ class CustomError extends Error {
     }
 }
 
-module.exports = CustomError;
+module.exports = CustomErrorError;
