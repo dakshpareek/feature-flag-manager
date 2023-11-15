@@ -1,12 +1,23 @@
-const http = require('http');
+const http2 = require('http2');
+
 const app = require('../index');
 const Logger = require('../middlewares/logger.middleware');
+const { sslConfig } = require("../config/vars");
 
 const port = process.env.PORT || 8080;
+const environment = process.env.NODE_ENV || 'development';
+const isProduction = environment === 'production';
 
 app.set('port', port);
 
-const server = http.createServer(app);
+let server;
+if (isProduction) {
+    // Use HTTP/2 with SSL for production
+    server = http2.createSecureServer(sslConfig, app);
+} else {
+    // Use standard HTTP for development
+    server = http2.createServer(app);
+}
 
 const onError = (error) => {
     if (error.syscall !== 'listen') {
