@@ -1,4 +1,5 @@
 const winston = require('winston');
+const httpContext = require('express-http-context');
 
 /**
  *  Define your severity levels.
@@ -56,8 +57,8 @@ const format = winston.format.combine(
     // winston.format.colorize({all: true}),
     // Define the format of the message showing the timestamp, the level and the message
     winston.format.printf(
-        info => `${info.timestamp} ${info.level}: ${info.message}`
-    )
+        info => `${info.timestamp} ${info.level} ${httpContext.get('rid')}: ${info.message}`
+    ),
 );
 
 /**

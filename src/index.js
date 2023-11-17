@@ -1,5 +1,7 @@
 require('./config/vars');
 
+const ruid = require('express-ruid');
+const httpContext = require('express-http-context');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -7,13 +9,19 @@ const helmet = require('helmet');
 const compression = require('compression');
 
 const { morganMiddleware } = require('./middlewares/morgan.middleware');
-const errorHandleMiddleware = require("./middlewares/errorHandler.middleware");
+const errorHandleMiddleware = require('./middlewares/errorHandler.middleware');
 const { NotFoundError } = require('./errors/NotFound.error');
 
 /**
  * Initialize express app
  */
 const app = express();
+
+// be sure to user the httpContext.middleware
+app.use(httpContext.middleware);
+
+// configure the 'setInContext' option to true
+app.use(ruid({ setInContext: true }));
 
 // trust proxy
 app.set('trust proxy', true);
