@@ -7,11 +7,11 @@ const httpContext = require('express-http-context');
  *see or hide levels based on the running ENV.
  */
 const levels = {
-    error: 0,
-    warn: 1,
-    info: 2,
-    http: 3,
-    debug: 4,
+  error: 0,
+  warn: 1,
+  info: 2,
+  http: 3,
+  debug: 4,
 };
 
 /**
@@ -21,9 +21,9 @@ const levels = {
  * if it was run in production, show only warn and error messages.
  */
 const level = () => {
-    const env = process.env.NODE_ENV || 'development';
-    const isDevelopment = env === 'development';
-    return isDevelopment ? 'debug' : 'warn';
+  const env = process.env.NODE_ENV || 'development';
+  const isDevelopment = env === 'development';
+  return isDevelopment ? 'debug' : 'warn';
 };
 
 /**
@@ -32,11 +32,11 @@ const level = () => {
  * adding the ability to focus or ignore messages.
  */
 const colors = {
-    error: 'red',
-    warn: 'yellow',
-    info: 'green',
-    http: 'magenta',
-    debug: 'white',
+  error: 'red',
+  warn: 'yellow',
+  info: 'green',
+  http: 'magenta',
+  debug: 'white',
 };
 
 /**
@@ -47,18 +47,18 @@ winston.addColors(colors);
 
 // Chose the aspect of your log customizing the log format.
 const format = winston.format.combine(
-    // Add the message timestamp with the preferred format
-    winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss:ms'}),
-    /**
+  // Add the message timestamp with the preferred format
+  winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss:ms' }),
+  /**
      * Tell Winston that the logs must be colored but
      * we bypass this global formatting colorize because generates
      * wrong output characters in file. Add in transports
      */
-    // winston.format.colorize({all: true}),
-    // Define the format of the message showing the timestamp, the level and the message
-    winston.format.printf(
-        info => `${info.timestamp} ${info.level} ${httpContext.get('rid')}: ${info.message}`
-    ),
+  // winston.format.colorize({all: true}),
+  // Define the format of the message showing the timestamp, the level and the message
+  winston.format.printf(
+    (info) => `${info.timestamp} ${info.level} ${httpContext.get('rid') ? httpContext.get('rid') : ''}: ${info.message}`,
+  ),
 );
 
 /**
@@ -66,23 +66,23 @@ const format = winston.format.combine(
  * In this example, we are using three different transports
  */
 const transports = [
-    // Allow the use the console to print the messages
-    new winston.transports.Console({
-        format: winston.format.combine(
-            // Integration to format. Tell Winston that the console logs must be colored
-            winston.format.colorize({all: true})
-        ),
-    }),
-    // Allow to print all the error level messages inside the error.log file
-    new winston.transports.File({
-        filename: './src/logs/error.log',
-        level: 'error',
-    }),
-    /**
+  // Allow the use the console to print the messages
+  new winston.transports.Console({
+    format: winston.format.combine(
+      // Integration to format. Tell Winston that the console logs must be colored
+      winston.format.colorize({ all: true }),
+    ),
+  }),
+  // Allow to print all the error level messages inside the error.log file
+  new winston.transports.File({
+    filename: './src/logs/error.log',
+    level: 'error',
+  }),
+  /**
      * Allow to print all the error message inside the all.log file
      * (also the error log that are also printed inside the error.log(
      */
-    new winston.transports.File({filename: './src/logs/all.log'}),
+  new winston.transports.File({ filename: './src/logs/all.log' }),
 ];
 
 /**
@@ -90,10 +90,10 @@ const transports = [
  * and used to log messages.
  */
 const LoggerMiddleware = winston.createLogger({
-    level: level(),
-    levels,
-    format,
-    transports,
+  level: level(),
+  levels,
+  format,
+  transports,
 });
 
 module.exports = LoggerMiddleware;

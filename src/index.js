@@ -33,7 +33,7 @@ app.use(helmet());
 app.use(express.json());
 
 // parse urlencoded request
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 // use GZIP compression
 app.use(compression());
@@ -52,7 +52,7 @@ app.options('*', cors());
  * Catchall middleware. Activate to serve every route in throw an error if the route is not found
  */
 app.all('*', () => {
-    throw new NotFoundError('Route not found');
+  throw new NotFoundError('Route not found');
 });
 
 /**

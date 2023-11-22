@@ -6,29 +6,29 @@
 const Logger = require('./logger.middleware');
 
 const errorHandleMiddleware = (err, req, res, next) => {
-    const isProduction = process.env.NODE_ENV === 'production';
-    let errorMessage = {};
+  const isProduction = process.env.NODE_ENV === 'production';
+  let errorMessage = {};
 
-    if (res.headersSent) {
-        return next(err);
-    }
+  if (res.headersSent) {
+    return next(err);
+  }
 
-    if (!isProduction) {
-        Logger.debug(err.stack);
-        errorMessage = err;
-    }
+  if (!isProduction) {
+    Logger.debug(err.stack);
+    errorMessage = err;
+  }
 
-    if (err) {
-        return res.status(err.statusCode || 500).json({
-            status: 'error',
-            statusCode: err.statusCode,
-            message: err.message,
-            error: {
-                message: err.message,
-                ...(!isProduction && {trace: errorMessage}),
-            },
-        });
-    }
+  if (err) {
+    return res.status(err.statusCode || 500).json({
+      status: 'error',
+      statusCode: err.statusCode,
+      message: err.message,
+      error: {
+        message: err.message,
+        ...(!isProduction && { trace: errorMessage }),
+      },
+    });
+  }
 };
 
 module.exports = errorHandleMiddleware;
