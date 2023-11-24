@@ -61,6 +61,14 @@ const format = winston.format.combine(
   ),
 );
 
+const logConfigs = {
+  maxsize:  20 * 1024 * 1024, // 20 MB size
+  maxFiles: 5,
+  tailable: true,
+  zippedArchive: true,
+}
+
+
 /**
  * Define which transports the logger must use to print out messages.
  * In this example, we are using three different transports
@@ -77,23 +85,31 @@ const transports = [
   new winston.transports.File({
     filename: './src/logs/error.log',
     level: 'error',
+    ...logConfigs,
   }),
   /**
      * Allow to print all the error message inside the all.log file
      * (also the error log that are also printed inside the error.log(
      */
-  new winston.transports.File({ filename: './src/logs/all.log' }),
+  new winston.transports.File({
+    filename: './src/logs/all.log',
+    ...logConfigs
+  }),
 ];
 
-/**
- * Create the logger instance that has to be exported
- * and used to log messages.
- */
-const LoggerMiddleware = winston.createLogger({
-  level: level(),
-  levels,
-  format,
-  transports,
-});
+// Singleton instance of the logger
+let loggerInstance;
 
-module.exports = LoggerMiddleware;
+function createLoggerInstance() {
+  if (!loggerInstance) {
+    loggerInstance = winston.createLogger({
+      level: level(),
+      levels,
+      format,
+      transports,
+    });
+  }
+  return loggerInstance;
+}
+
+module.exports = createLoggerInstance();
