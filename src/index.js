@@ -11,6 +11,7 @@ const compression = require('compression');
 const { morganMiddleware } = require('./middlewares/morgan.middleware');
 const errorHandleMiddleware = require('./middlewares/errorHandler.middleware');
 const { NotFoundError } = require('./errors/NotFound.error');
+const { apiV1Router } = require('./api/v1/index.route');
 
 /**
  * Initialize express app
@@ -47,6 +48,8 @@ app.use(cookieParser());
 // enable cors
 app.use(cors());
 app.options('*', cors());
+
+app.use('/api/v1/', apiV1Router);
 
 /**
  * Catchall middleware. Activate to serve every route in throw an error if the route is not found
