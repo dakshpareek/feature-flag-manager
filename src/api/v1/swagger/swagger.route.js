@@ -5,7 +5,7 @@ const swaggerDocument = require('./swagger.json');
 const swaggerRouter = Router();
 
 const options = {
-    explorer: true,
+  explorer: true,
 };
 
 swaggerRouter.use('/', swaggerUi.serve);

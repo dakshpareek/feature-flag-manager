@@ -62,12 +62,11 @@ const format = winston.format.combine(
 );
 
 const logConfigs = {
-  maxsize:  20 * 1024 * 1024, // 20 MB size
+  maxsize: 20 * 1024 * 1024, // 20 MB size
   maxFiles: 5,
   tailable: true,
   zippedArchive: true,
-}
-
+};
 
 /**
  * Define which transports the logger must use to print out messages.
@@ -93,7 +92,7 @@ const transports = [
      */
   new winston.transports.File({
     filename: './src/logs/all.log',
-    ...logConfigs
+    ...logConfigs,
   }),
 ];
 
