@@ -1,12 +1,13 @@
 const http = require('http');
 const app = require('../index');
 const Logger = require('../middlewares/logger.middleware');
+const { assertDatabaseConnectionOk } = require('../helpers/sequelize');
 
 const port = process.env.PORT || 8080;
 
 app.set('port', port);
 
-const server = http.createServer(app);
+let server;
 
 const onError = (error) => {
   if (error.syscall !== 'listen') {
@@ -37,6 +38,19 @@ const onListening = () => {
   Logger.info(`🚀 Server listening on port ${bind}`);
 };
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+const startServer = async () => {
+  try {
+    await assertDatabaseConnectionOk();
+
+    server = http.createServer(app);
+
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+  } catch (e) {
+    Logger.error('Error starting the server:', e);
+    process.exit(1);
+  }
+};
+
+startServer().then();
