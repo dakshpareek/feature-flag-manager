@@ -1,29 +1,40 @@
-const request = require('supertest');
-const httpStatus = require('http-status');
-const app = require('../index');
+const featureFlags = require('../index');
+const { getFlag, setFlag } = require('../services/flags');
+const { checkFlag } = require('../helpers/utils');
 
-/**
- * Test to see if the server is running
- */
-describe('GET /api/v1/', () => {
-  test('should return 200 OK', async () => {
-    const res = await request(app).get('/api/v1/');
-    expect(res.statusCode).toEqual(httpStatus.OK);
-  });
-  afterAll((done) => {
-    done();
-  });
-});
+jest.mock('../services/flags');
+jest.mock('../helpers/utils');
 
-/**
- * Test to see if swagger doc is not running on test server
- */
-describe('GET /api/v1/documentation', () => {
-  test('should return 404 NOT_FOUND', async () => {
-    const res = await request(app).get('/api/v1/documentation');
-    expect(res.statusCode).toEqual(httpStatus.NOT_FOUND);
-  });
-  afterAll((done) => {
-    done();
-  });
+describe('Index Operations', () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+    });
+
+    it('should call getFlag from flags module', () => {
+        getFlag.mockReturnValue(true);
+
+        const flagValue = featureFlags.getFlag('featureA');
+        expect(flagValue).toEqual(true);
+        expect(getFlag).toHaveBeenCalledWith('featureA');
+    });
+
+    it('should call setFlag from flags module', () => {
+        setFlag.mockImplementation((flagName, value) => {
+            expect(flagName).toEqual('featureB');
+            expect(value).toEqual(true);
+        });
+
+        featureFlags.setFlag('featureB', true);
+        expect(setFlag).toHaveBeenCalledWith('featureB', true);
+    });
+
+    it('should call checkFlag from utils module', () => {
+        checkFlag.mockReturnValue(false);
+
+        const flagValue = featureFlags.checkFlag('featureC');
+        expect(flagValue).toEqual(false);
+        expect(checkFlag).toHaveBeenCalledWith('featureC');
+    });
+
+    // Add more test cases as needed for additional functionalities in index.js
 });
