@@ -1,8 +1,3 @@
-const flags = require("./services/flags");
-const utils = require("./helpers/utils");
+const FeatureFlagManager = require('./services/FeatureFlagManager');
 
-module.exports = {
-  getFlag: flags.getFlag,
-  checkFlag: utils.checkFlag,
-  setFlag: flags.setFlag, // (Optional)
-};
+module.exports = FeatureFlagManager;
