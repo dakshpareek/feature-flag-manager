@@ -7,6 +7,7 @@ const FeatureFlagManager = require('../services/FeatureFlagManager');
 const { promisify } = require('util');
 
 const path = require("path");
+const resolveFrom = require("resolve-from");
 
 // Promisify common functions.
 const readFile = promisify(fs.readFile);
@@ -37,12 +38,18 @@ program
     .command('init')
     .description('Create a fresh config file.')
     .action(async () => {
+        let modulePath = resolveFrom.silent(process.cwd(), 'feature-flag-library');
         if (featureFlagManager.configFile) {
             console.log(`Error: config file already exists at ${featureFlagManager.configFile}`);
         } else {
             const stubPath = `./feature-flag.config.js`;
             try {
-                const code = await readFile('./src/sub/flag.config.js');
+                const featureFlagLibraryPath = resolveFrom.silent(process.cwd(), 'feature-flag-library');
+                const modulePath = featureFlagLibraryPath ?
+                    path.join(path.dirname(featureFlagLibraryPath), 'sub/flag.config.js') :
+                    './src/sub/flag.config.js';
+                const code = await readFile(modulePath);
+
                 await writeFile(stubPath, code);
                 console.log(`Created file.`);
             } catch (error) {

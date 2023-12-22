@@ -4,10 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "bin": {
-    "feature-flag-manager": "src/bin/index.js"
-  },
-  "alias": {
-    "ffm": "feature-flag-manager"
+    "feature-flag-manager": "src/bin/index.js",
+    "ffm": "src/bin/index.js"
   },
   "scripts": {
     "ffm": "node src/bin/index.js",
@@ -41,7 +39,8 @@
     "winston": "^3.11.0",
     "yamljs": "^0.3.0",
     "commander": "^11.1.0",
-    "figlet": "^1.7.0"
+    "figlet": "^1.7.0",
+    "resolve-from": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",
