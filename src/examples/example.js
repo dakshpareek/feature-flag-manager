@@ -1,21 +1,11 @@
-const path = require('path');
-
 require('../config/vars');
 
 const FeatureFlagManager = require('../services/FeatureFlagManager');
 
-const defaultFlagFilePath = path.join(__dirname, 'defaultFlags.json');
-
-// Initialize FeatureFlagManager with Redis connection details
-const redisConnectionString = process.env.REDIS_URL;
-
 // Connecting to Redis and performing operations
 (async () => {
   try {
-    const featureFlagManager = new FeatureFlagManager({
-      redisConnectionString,
-      defaultFlagFilePath,
-    });
+    const featureFlagManager = new FeatureFlagManager();
 
     await featureFlagManager.init();
 
