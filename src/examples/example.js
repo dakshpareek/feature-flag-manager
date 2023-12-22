@@ -47,8 +47,10 @@ const redisConnectionString = process.env.REDIS_URL;
         const anotherDefaultFlagExists = await featureFlagManager.checkFlag('anotherDefaultFlag');
         console.log('Another Default Flag exists:', anotherDefaultFlagExists);
 
+        const allFlags = await featureFlagManager.listFlags();
+        console.log(`All flags: ${allFlags}`)
         // Disconnect from Redis
-        featureFlagManager.disconnect();
+        await featureFlagManager.disconnect();
     } catch (error) {
         console.error('Error in operations:', error);
     }

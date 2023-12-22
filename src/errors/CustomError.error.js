@@ -5,6 +5,14 @@ class CustomErrorError extends Error {
     this.name = this.constructor.name;
     this.statusCode = statusCode;
     this.message = message;
+    this.isOperational = true; // Indicates if this is a trusted error
+  }
+
+  toResponse() {
+    return {
+      statusCode: this.statusCode,
+      message: this.message,
+    };
   }
 }
 
