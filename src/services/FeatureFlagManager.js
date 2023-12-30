@@ -32,7 +32,7 @@ class FeatureFlagManager {
     }
     this.configData = await openConfigFile(this.configFile);
     await this.setConfigs(this.configData);
-    await RedisClient.testConnectionString(this.redisConnectionString);
+    await RedisClient.validateConnection(this.redisConnectionString);
     await this.testDefaultFlagFile(); // Add a method to test the default flag file
     console.log('Configuration is valid.');
   }
@@ -40,7 +40,7 @@ class FeatureFlagManager {
   async testDefaultFlagFile() {
     try {
       if (this.defaultFlagFilePath) {
-        const defaultFlags = JSON.parse(fs.readFileSync(this.defaultFlagFilePath, 'utf8'));
+        JSON.parse(fs.readFileSync(this.defaultFlagFilePath, 'utf8'));
         console.log('Default flag file is valid.');
       }
     } catch (error) {

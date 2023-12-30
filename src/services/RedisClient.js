@@ -15,7 +15,7 @@ class RedisClient extends RedisConnection {
     });
   }
 
-  static async testConnectionString(redisConnectionString) {
+  static async validateConnection(redisConnectionString) {
     const testClient = new Redis(redisConnectionString, {
       maxRetriesPerRequest: 0,
     });
@@ -56,11 +56,11 @@ class RedisClient extends RedisConnection {
   }
 
   async get(key) {
-    return await this.client.get(key);
+    return this.client.get(key);
   }
 
   async keys(pattern) {
-    return await this.client.keys(pattern);
+    return this.client.keys(pattern);
   }
 
   async del(key) {
